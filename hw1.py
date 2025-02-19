@@ -2,8 +2,7 @@
 import numpy as np
 import time
 
-def answer(value, iterations, fpOps):
-    return f'Approximate Solution: {value}, Iterations: {iterations}, Approximate Number of Floating Point Operations: {fpOps}'
+answer = lambda value, iterations, flops: f'Approximate Solution: {value}, Iterations: {iterations}, Approximate Number of Floating Point Operations: {flops}'
 
 def randomUniform():
     x1,x2 = time.time(), time.time()
@@ -55,16 +54,30 @@ class Q1:
     def method4(self):
         iterations = 0
         while(True):
-            x = randomUniform(0.50, 0.75)
+            x = randomUniform()
             iterations += 1
             if abs(self.f(x)) < self.TOL:
                 return x
             
+#Question 2
+class Q2:
+    def __init__(self):
+        self.A = np.array([[1,1,1,1,1], [1,2,4,8,16], [1,3,9,27,81], [1,4,16,64,256], [1,5,25,125,625]])
+        self.b = np.array([412, 407, 397, 398, 417])
+     
+    #Quartic Interpolation   
+    def part1(self):
+        coefficients = np.dot(np.linalg.inv(self.A), self.b)
+        return sum([coefficients[i] * np.pow(6, i) for i in range(len(coefficients))])
     
+    def part2(self):
+        pass
+            
 if __name__ == "__main__":
     Q1 = Q1()
     print(Q1.method1())
     print(Q1.method2())
     print(Q1.method3())
     print(Q1.method4())
-        
+    Q2 = Q2()
+    print(Q2.part1())
