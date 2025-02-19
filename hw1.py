@@ -5,7 +5,7 @@ import time
 def answer(value, iterations, fpOps):
     return f'Approximate Solution: {value}, Iterations: {iterations}, Approximate Number of Floating Point Operations: {fpOps}'
 
-def randomUniform(a,b):
+def randomUniform():
     x1,x2 = time.time(), time.time()
     return 0.25 * ((x1 + x2) % 1) + 0.50
 
