@@ -2,7 +2,8 @@
 import numpy as np
 import time
 
-answer = lambda value, iterations, flops: f'Approximate Solution: {value}, Iterations: {iterations}, Approximate Number of Floating Point Operations: {flops}'
+def answer(value, iterations, flops):
+    return f'Approximate Solution: {value}, Iterations: {iterations}, Approximate Number of Floating Point Operations: {flops}'
 
 def randomUniform():
     x1,x2 = time.time(), time.time()
@@ -12,52 +13,69 @@ def randomUniform():
 class Q1:
     def __init__(self):
         self.f = lambda x: np.exp(np.power(-x, 3)) - np.power(x, 4) - np.sin(x)
+        self.funcFLOPS = 43
+        self.derivFLOPS = 45
         self.TOL = 0.5 * np.power(10.0, -4)
         
     #Bisection Method   
     def method1(self):
+        flops = 0
         iterations = 0
         a,b = -1, 1
         while (b - a) / 2 > self.TOL:
+            flops += 2
             iterations += 1
             c = (a + b) / 2
+            flops += 2
             if self.f(c) == 0:
+                flops += self.funcFLOPS
                 break
             elif self.f(a) * self.f(c) < 0:
+                flops += 2 * self.funcFLOPS
                 b = c
             else:
                 a = c
-        return (a + b) / 2
+        flops += 2
+        return answer((a + b) / 2, iterations, flops)
     
     #Newton's Method
     def method2(self):
+        flops = 0
         deriv = lambda x: -3 * np.power(x, 2) * np.exp(np.pow(-x, 3)) - (4 * np.pow(x, 3)) - np.cos(x)
         x = 0
         iterations = 0 
         while abs(self.f(x)) >= self.TOL:
+            flops += self.funcFLOPS + 1
             x -= (self.f(x) / deriv(x))
+            flops += self.funcFLOPS + self.derivFLOPS + 2
             iterations += 1
-        return x
+        return answer(x, iterations, flops)
     
     #Secant Method
     def method3(self):
         x1, x2 = -1, 1
         iterations = 0
+        flops = 0
         while abs(self.f(x2)) >= self.TOL:
+            flops += self.funcFLOPS + 1
             temp = x2
             x2 -= (x2 - x1) * (self.f((x2)) / (self.f(x2) - self.f(x1)))
+            flops += 3 * self.funcFLOPS + 5
             iterations += 1
             x1 = temp
-        return x2
+        return answer(x2, iterations, flops)
     
     #Monte Carlo Method
     def method4(self):
         iterations = 0
+        flops = 0
         while(True):
             x = randomUniform()
+            flops += 4
             iterations += 1
             if abs(self.f(x)) < self.TOL:
-                return x
+                flops += self.funcFLOPS + 1
+                return answer(x, iterations, flops)
             
 #Question 2
 class Q2:
@@ -71,8 +89,15 @@ class Q2:
         return sum([coefficients[i] * np.pow(6, i) for i in range(len(coefficients))])
     
     def part2(self):
-        pass
-            
+        A = np.array([[1,1,1], [1,2,4], [1,3,9], [1,4,16],[1,5,25]])
+        b = np.array([412, 407,397, 398, 417])
+        transpose = np.linalg.matrix_transpose(A)
+        pseudo = np.linalg.matmul(transpose, A)
+        newB = np.linalg.matmul(transpose, b)
+        coefficients = np.linalg.matmul(np.linalg.inv(pseudo), newB)
+        return sum([coefficients[i] * np.pow(6, i) for i in range(len(coefficients))])
+        
+        
 if __name__ == "__main__":
     Q1 = Q1()
     print(Q1.method1())
@@ -81,3 +106,4 @@ if __name__ == "__main__":
     print(Q1.method4())
     Q2 = Q2()
     print(Q2.part1())
+    print(Q2.part2())
