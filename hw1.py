@@ -2,9 +2,6 @@
 import numpy as np
 import random
 
-def answer(value, iterations, flops):
-    return f'Approximate Solution: {value}, Iterations: {iterations}, Approximate Number of Floating Point Operations: {flops}'
-
 # Question 1
 class Q1:
     def __init__(self):
@@ -12,6 +9,9 @@ class Q1:
         self.funcFLOPS = 43
         self.derivFLOPS = 45
         self.TOL = 0.5 * np.power(10.0, -4)
+        
+    def answer(value, iterations, flops):
+      return f'Approximate Solution: {value}, Iterations: {iterations}, Approximate Number of Floating Point Operations: {flops}'    
         
     #Bisection Method   
     def method1(self):
@@ -32,7 +32,7 @@ class Q1:
             else:
                 a = c
         flops += 2
-        return answer((a + b) / 2, iterations, flops)
+        return self.answer((a + b) / 2, iterations, flops)
     
     #Newton's Method
     def method2(self):
@@ -45,7 +45,7 @@ class Q1:
             x -= (self.f(x) / deriv(x))
             flops += self.funcFLOPS + self.derivFLOPS + 2
             iterations += 1
-        return answer(x, iterations, flops)
+        return self.answer(x, iterations, flops)
     
     #Secant Method
     def method3(self):
@@ -59,7 +59,7 @@ class Q1:
             flops += 3 * self.funcFLOPS + 5
             iterations += 1
             x1 = temp
-        return answer(x2, iterations, flops)
+        return self.answer(x2, iterations, flops)
     
     #Monte Carlo Method
     def method4(self):
@@ -71,7 +71,7 @@ class Q1:
             iterations += 1
             if abs(self.f(x)) < self.TOL:
                 flops += self.funcFLOPS + 1
-                return answer(x, iterations, flops)
+                return self.answer(x, iterations, flops)
             
 #Question 2
 class Q2:
