@@ -6,11 +6,12 @@ import random
 class Q1:
     def __init__(self):
         self.f = lambda x: np.exp(np.power(-x, 3)) - np.power(x, 4) - np.sin(x)
+        self.r = 0.641583
         self.funcFLOPS = 43
         self.derivFLOPS = 45
         self.TOL = 0.5 * np.power(10.0, -4)
         
-    def answer(value, iterations, flops):
+    def answer(self, value, iterations, flops):
       return f'Approximate Solution: {value}, Iterations: {iterations}, Approximate Number of Floating Point Operations: {flops}'    
         
     #Bisection Method   
@@ -65,11 +66,11 @@ class Q1:
     def method4(self):
         iterations = 0
         flops = 0
-        while(True):
+        while True:
             x = random.uniform(0.50, 0.75)
             flops += 4
             iterations += 1
-            if abs(self.f(x)) < self.TOL:
+            if abs(x - self.r) < self.TOL:
                 flops += self.funcFLOPS + 1
                 return self.answer(x, iterations, flops)
             
