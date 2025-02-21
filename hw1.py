@@ -1,13 +1,9 @@
 
 import numpy as np
-import time
+import random
 
 def answer(value, iterations, flops):
     return f'Approximate Solution: {value}, Iterations: {iterations}, Approximate Number of Floating Point Operations: {flops}'
-
-def randomUniform():
-    x1,x2 = time.time(), time.time()
-    return 0.25 * ((x1 + x2) % 1) + 0.50
 
 # Question 1
 class Q1:
@@ -70,7 +66,7 @@ class Q1:
         iterations = 0
         flops = 0
         while(True):
-            x = randomUniform()
+            x = random.uniform(0.50, 0.75)
             flops += 4
             iterations += 1
             if abs(self.f(x)) < self.TOL:
